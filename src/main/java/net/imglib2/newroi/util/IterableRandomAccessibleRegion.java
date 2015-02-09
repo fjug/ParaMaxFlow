@@ -5,7 +5,6 @@ import java.util.Iterator;
 import net.imglib2.AbstractWrappedInterval;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
@@ -54,11 +53,11 @@ public class IterableRandomAccessibleRegion< T extends BooleanType< T > >
 		return this;
 	}
 
-	@Override
-	public boolean equalIterationOrder( final IterableRealInterval< ? > f )
-	{
-		return iterationOrder().equals( f.iterationOrder() );
-	}
+//	@Override
+//	public boolean equalIterationOrder( final IterableRealInterval< ? > f )
+//	{
+//		return iterationOrder().equals( f.iterationOrder() );
+//	}
 
 	@Override
 	public Iterator< T > iterator()

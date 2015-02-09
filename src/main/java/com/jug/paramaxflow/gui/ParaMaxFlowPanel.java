@@ -49,6 +49,7 @@ import net.imglib2.converter.Converters;
 import net.imglib2.img.ImagePlusAdapter;
 import net.imglib2.img.Img;
 import net.imglib2.img.display.imagej.ImageJFunctions;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Util;
@@ -163,9 +164,9 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 		this.frame = frame;
 		this.imgPlus = imgPlus;
 
-		final Img< ? > temp = ImagePlusAdapter.wrapNumeric( imgPlus );
-		this.imgOrig = Converters.convert( Views.interval( temp, temp ), new RealDoubleNormalizeConverter( 1.0 ), new DoubleType() );
-		this.imgOrigNorm = Converters.convert( Views.interval( temp, temp ), new RealDoubleNormalizeConverter( imgPlus.getStatistics().max ), new DoubleType() );
+		final Img< ? extends RealType > temp = ImagePlusAdapter.wrapNumeric( imgPlus );
+		this.imgOrig = Converters.convert( ( RandomAccessibleInterval ) temp, new RealDoubleNormalizeConverter( 1.0 ), new DoubleType() );
+		this.imgOrigNorm = Converters.convert( ( RandomAccessibleInterval ) temp, new RealDoubleNormalizeConverter( imgPlus.getStatistics().max ), new DoubleType() );
 
 		this.imgCostModulationImage = null;
 		this.imgUnaryCostImage = null;
@@ -554,8 +555,8 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 
 	}
 
-	/** 
-	 * 
+	/**
+	 *
 	 */
 	public void actionCreateUnaryPotentialFunctionFromRawImageAnotations() {
 		if ( LongType.class.isInstance( Util.getTypeFromInterval( icOrig.getSourceImage() ) ) || DoubleType.class.isInstance( Util.getTypeFromInterval( icOrig.getSourceImage() ) ) ) {
@@ -582,7 +583,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionExportCurrentSegmentationToFiji() {
 		if ( this.imgSegmentation != null ) {
@@ -593,7 +594,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionExportSumImgToFiji() {
 		if ( this.imgSumLong != null ) {
@@ -604,7 +605,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionStartParaMaxFlow() {
 		boolean success = false;
@@ -638,7 +639,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private boolean actionStartParaMaxFlowUsingClassificationBasedPotentials() {
 		try {
@@ -657,7 +658,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private boolean actionStartParaMaxFlowUsingFunctionBasedPotentials() {
 		if ( this.bUseCostModulationClassifier.isSelected() ) {
@@ -669,7 +670,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionSetBinaryEdgePotentialFunction() {
 		if ( funcComposerPairwiseEdge == null ) {
@@ -685,7 +686,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionSetBinaryIsingPotentialFunction() {
 		try {
@@ -699,7 +700,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionSetUnaryPotentialFunction() {
 		if ( funcComposerUnaries == null ) {
@@ -713,7 +714,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionSaveCostFunctions() {
 		final JFileChooser fc = new JFileChooser( DEFAULT_PATH );
@@ -739,7 +740,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionLoadCostFunction() {
 		final JFileChooser fc = new JFileChooser( DEFAULT_PATH );
@@ -765,7 +766,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void computeCostModulationImage() {
 		if ( this.classifierCostsModulation != null ) {
@@ -778,7 +779,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void computeUnaryCostImage() {
 		if ( this.classifierUnaryCosts != null ) {
@@ -791,7 +792,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void computePairwiseCostImage() {
 		if ( this.classifierPairwiseCosts != null ) {

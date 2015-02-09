@@ -5,7 +5,6 @@ import java.util.Iterator;
 import net.imglib2.AbstractWrappedInterval;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.type.BooleanType;
 
@@ -55,11 +54,11 @@ public class SamplingIterableInterval< B extends BooleanType< B >, T >
 		return sourceInterval.iterationOrder();
 	}
 
-	@Override
-	public boolean equalIterationOrder( final IterableRealInterval< ? > f )
-	{
-		return iterationOrder().equals( f.iterationOrder() );
-	}
+//	@Override
+//	public boolean equalIterationOrder( final IterableRealInterval< ? > f )
+//	{
+//		return iterationOrder().equals( f.iterationOrder() );
+//	}
 
 	@Override
 	public Iterator< T > iterator()

@@ -18,7 +18,6 @@ import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.img.imageplus.ImagePlusImg;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.Views;
 import trainableSegmentation.WekaSegmentation;
 
 /**
@@ -69,7 +68,7 @@ public class SilentWekaSegmenter< T extends NumericType > {
 
 		System.out.println( "Processing " + raiList.size() + " image files in " + numThreads + " thread(s)...." );
 
-		final Thread[] threads = new Thread[numThreads];
+		final Thread[] threads = new Thread[ numThreads ];
 
 		class ImageProcessingThread extends Thread {
 
@@ -90,21 +89,21 @@ public class SilentWekaSegmenter< T extends NumericType > {
 
 				for ( int i = numThread; i < raiList.size(); i += numThreads ) {
 
-					final ImagePlus testImage = ImageJFunctions.wrap( raiList.get( i ), "Img_num_" + i );
-					System.out.println( "Processing image " + i + " in thread " + numThread );
+					final ImagePlus forWekaImagePlus = ImageJFunctions.wrap( raiList.get( i ), "Img_num_" + i ).duplicate();
+					System.out.println( "Processing image " + ( i + 1 ) + " in thread " + ( numThread + 1 ) );
 
-					final ImagePlus segmentation = wekaSegmentation.applyClassifier(testImage, numFurtherThreads, probabilityMaps);
+					final ImagePlus segmentation = wekaSegmentation.applyClassifier( forWekaImagePlus, numFurtherThreads, probabilityMaps );
 //					segmentation.
 
-					if ( null != segmentation) {
-						final ImagePlusImg temp = ImagePlusAdapter.wrapNumeric( segmentation );
-						raiListOutputs.set( i, Converters.convert( Views.interval( temp, temp ), new RealDoubleConverter(), new DoubleType() ) );
+					if ( null != segmentation ) {
+						final ImagePlusImg< ?, ? > temp = ImagePlusAdapter.wrapNumeric( segmentation );
+						raiListOutputs.set( i, Converters.convert( ( RandomAccessibleInterval< ? > ) temp, new RealDoubleConverter(), new DoubleType() ) );
 					} else {
 						System.out.println( "WARNING!!! One of the input images could not be classified!!!" );
 					}
 
 					segmentation.close();
-					testImage.close();
+					forWekaImagePlus.close();
 				}
 			}
 		}
@@ -116,10 +115,10 @@ public class SilentWekaSegmenter< T extends NumericType > {
 		}
 
 		// wait for all threads to terminate
-		for (final Thread thread : threads) {
+		for ( final Thread thread : threads ) {
 			try {
 				thread.join();
-			} catch (final InterruptedException e) {}
+			} catch ( final InterruptedException e ) {}
 		}
 
 		return results;
