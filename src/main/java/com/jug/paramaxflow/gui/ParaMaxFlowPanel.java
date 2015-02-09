@@ -53,7 +53,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Util;
-import net.imglib2.view.Views;
 
 import org.jhotdraw.draw.AttributeKey;
 import org.jhotdraw.draw.BezierFigure;
@@ -174,7 +173,7 @@ public class ParaMaxFlowPanel extends JPanel implements ActionListener, ChangeLi
 		this.imgSumLong = null;
 		this.imgSegmentation = null;
 
-		this.icOrig = new IddeaComponent( Views.interval( imgOrigNorm, imgOrigNorm ) );
+		this.icOrig = new IddeaComponent( imgOrigNorm );
 		this.icSumImg = new IddeaComponent( new Dimension( imgPlus.getWidth(), imgPlus.getHeight() ) );
 		this.icSeg = new IddeaComponent( new Dimension( imgPlus.getWidth(), imgPlus.getHeight() ) );
 
